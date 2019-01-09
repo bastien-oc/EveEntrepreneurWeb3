@@ -1,0 +1,107 @@
+﻿@model EntrepreneurCommon.Models.DatabaseModels.DbTokenWrapper
+
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>View</h2>
+
+<div>
+    <h4>EsiTokenContainer</h4>
+    <hr/>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CharacterId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CharacterId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CharacterName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CharacterName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CharacterOwnerHash)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CharacterOwnerHash)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpiresOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExpiresOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Scopes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Scopes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TokenType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TokenType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AccessToken)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccessToken)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpiresIn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExpiresIn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RefreshToken)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RefreshToken)
+        </dd>
+
+    </dl>
+</div>
+
+<div>
+
+</div>
+<p>
+    <button class="btn btn-outline-primary">
+        @Html.ActionLink("View as JSON", "AsJson", "Tokens", new {uuid = Model.Uuid})
+    </button> |
+    @if (Request.IsAuthenticated) {
+        <button class="btn btn-danger">
+            @Html.ActionLink($"Revoke token", "DeleteToken", "Tokens", new {UUID = Model.Uuid})
+        </button>
+        @Html.Raw($"|")
+    }
+    <button class="btn btn-outline-primary">
+        @Html.ActionLink("Refresh", "Refresh", "Tokens", new {UUID = Model.Uuid})
+    </button> |
+    <button class="btn btn-outline-primary">
+        @Html.ActionLink("Back to List", "Index", "Tokens")
+    </button> |
+</p>

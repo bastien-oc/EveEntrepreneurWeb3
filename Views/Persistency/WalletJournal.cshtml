@@ -1,0 +1,164 @@
+﻿@using EntrepreneurCommon.Helpers
+@using EntrepreneurCommon.Models
+@using EntrepreneurCommon.Models.EsiResponseModels
+@using EveEntrepreneurWebPersistency3.Logic
+@using EveEntrepreneurWebPersistency3.Models
+@model IEnumerable<EntrepreneurCommon.Models.EsiResponseModels.CharacterWalletJournalModel>
+
+@{
+    ViewBag.Title = "Wallet Journal";
+    int id = ViewBag.Id;
+    NameCache characterName = Database.ResolveIdToName(ViewBag.Id);
+
+    var context = new AppDbContext();
+    var endpoint = RequestHelper.GetEndpointUrl<CharacterWalletJournalModel>().Replace("{character_id}", id.ToString());
+
+    var cacheTimer = context.CacheTimers.FirstOrDefault(t => t.Resource == endpoint);
+    var tz = TimeZone.CurrentTimeZone.IsDaylightSavingTime(DateTime.Now) ? TimeZone.CurrentTimeZone.DaylightName : TimeZone.CurrentTimeZone.StandardName;
+}
+
+<h2>WalletJournal <br/><small><strong>@Html.ActionLink(characterName.Name, "DynamicInfo", "Info", new {id = id}, null)</strong> (@ViewBag.Id)</small></h2>
+<div id="cachetimer">
+    <dl class="dl-horizontal">
+        <dt>Last Updated</dt>
+        <dd>@cacheTimer.LastUpdated.ToLocalTime()</dd>
+        <dt>Expires</dt>
+        <dd>@cacheTimer.Expires.ToLocalTime()</dd>
+    </dl>
+</div>
+
+<script>
+
+    @*var endpoint = "@WalletJournalModelCharV4.Endpoint";
+    var url = "http://hadesdev.ddns.net/asp_eve/api/timers/" + @ViewBag.Id + "?endpoint=" + endpoint;
+    var element = document.getElementById("cachetimer");
+    element.innerHTML = url;
+
+    fetch(url).then(data => { return data.json() }).then(res => {
+        element.innerHTML = "<dl class=\"dl-horizontal\">" +
+            "<dt>Expires</dt><dd>" + res["Expires"] + "</dd><dt>Last Updated</dt><dd>" + res["LastUpdated"] +"</dd></dl>";
+        console.log(res);
+    });*@
+</script>
+
+<table class="table table-striped table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Balance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstPartyId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RefType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SecondPartyId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tax)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TaxReceiverId)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model) {
+        var balanceStr = $"{item.Balance:0,000.00} ISK";
+        var amountStr = $"{item.Amount:0,000.00} ISK";
+        string FirstPartyName = "";
+        string SecondPartyName = "";
+
+        // Project Discovery IDs are deemed as Invalid from API, so any wallet entry pertaining to ProjectDiscovery *will* throw errors. We have to ignore them.
+        try {
+            FirstPartyName = Database.ResolveIdToName(item.FirstPartyId)?.Name;
+        }
+        catch (Exception e) { }
+        try {
+            SecondPartyName = Database.ResolveIdToName(item.SecondPartyId)?.Name;
+        }
+        catch (Exception e) { }
+
+        if (string.IsNullOrEmpty(FirstPartyName)) {
+            FirstPartyName = "Unknown";
+        }
+        if (string.IsNullOrEmpty(SecondPartyName)) {
+            SecondPartyName = "Unknown";
+        }
+
+        string TaxReceiverName = "";
+        if (item.TaxReceiverId != 0) {
+            TaxReceiverName = Database.ResolveIdToName(item.TaxReceiverId)?.Name;
+        }
+        if (string.IsNullOrEmpty(TaxReceiverName)) {
+            TaxReceiverName = "";
+        }
+
+        var descriptionString = item.Description;
+        var reasonStrong = item.Reason;
+
+        <tr>
+            <td class="right">
+                @*@Html.DisplayFor(modelItem => item.Amount)*@
+                @Html.Raw(amountStr)
+            </td>
+            <td class="right">
+                @{
+                }
+                @*@Html.DisplayFor(modelItem => item.Balance)*@
+                @Html.Raw(balanceStr)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @if (string.IsNullOrEmpty(reasonStrong)) {
+                    @Html.DisplayFor(modelItem => item.Description)
+                }
+                else {
+                    <a class="info" title="@reasonStrong">@descriptionString</a>
+                }
+            </td>
+            <td>
+                <strong >@Html.ActionLink(FirstPartyName, "DynamicInfo", "Info", new {id = item.FirstPartyId}, null)</strong><br/>
+                (@Html.DisplayFor(modelItem => item.FirstPartyId))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RefType)
+            </td>
+            <td>
+                @{
+                }
+                <strong>@Html.ActionLink(SecondPartyName, "DynamicInfo", "Info", new {id = item.SecondPartyId}, null)</strong><br/>
+                (@Html.DisplayFor(modelItem => item.SecondPartyId))
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tax)
+            </td>
+            <td>
+                @{
+                    if (!string.IsNullOrEmpty(TaxReceiverName)) {
+                        <strong>@Html.ActionLink(TaxReceiverName, "DynamicInfo", "Info", new {id = item.TaxReceiverId}, null)</strong>
+                        <br/>
+                        @Html.Raw("(")@Html.DisplayFor(modelItem => item.TaxReceiverId)@Html.Raw(")")
+                    }
+                }
+
+            </td>
+            <td>
+            </td>
+        </tr>
+    }
+
+</table>

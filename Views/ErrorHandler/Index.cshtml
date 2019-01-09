@@ -1,0 +1,27 @@
+﻿@using Newtonsoft.Json
+@model ExceptionContext
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>An error has occured. <small>The issue was logged and someone will hopefully fix it soon!</small></h2>
+
+@{
+    if (Request.IsAuthenticated) {
+        var lastException = Server.GetLastError();
+        var exceptionMessage = lastException != null ? lastException?.Message : "No exception has occured in this instance.";
+        var innerException = lastException?.InnerException;
+        var innerExceptionMessage = innerException != null ? innerException.Message : "No inner exception was caught.";
+        if (lastException != null) {
+            <h3>Exception Message</h3>
+            <pre class="pre-scrollable">@exceptionMessage</pre>
+        }
+        else {
+            <h4>Hooray! No exception has occured!</h4>
+        }
+        if (innerException != null) {
+            <h3>Inner Exception</h3>
+            <pre class="pre-scrollable">@innerExceptionMessage</pre>
+        }
+    }
+}

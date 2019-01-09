@@ -1,0 +1,23 @@
+﻿@using EveEntrepreneurWebPersistency3.Logic
+@using EveEntrepreneurWebPersistency3.Logic.Helpers
+@using Newtonsoft.Json
+@model List<EveEntrepreneurWebPersistency3.Models.CharacterPublicInformation>
+
+@{
+    ViewBag.Title = "IndexByCharacters";
+}
+
+<h2>IndexByCharacters</h2>
+<div class="container">
+    <div class="row">
+        @foreach (var cpi in Model) {
+            <div class="col-6">
+                <img src="@EveImageServer.GetCharacterImage(cpi.CharacterId,CharacterImageSize.Res128)" title="@Database.ResolveIdToName(cpi.CharacterId)"/>
+                <img src="@EveImageServer.GetCorporationImage(cpi.CorporationID,CorporationImageSize.Res128)" title="@Database.ResolveIdToName(cpi.CorporationID)"/>
+                <img src="@EveImageServer.GetAllianceImage(cpi.AllianceID,AllianceImageSize.Res128)" title="@Database.ResolveIdToName(cpi.AllianceID)"/>
+            </div>
+            <hr/>
+        }
+    </div>
+</div>
+

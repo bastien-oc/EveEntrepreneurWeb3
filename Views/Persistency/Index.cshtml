@@ -1,0 +1,91 @@
+﻿@using EntrepreneurCommon.Authentication
+@using EveEntrepreneurWebPersistency3.Logic
+@using EveEntrepreneurWebPersistency3.Models
+@model IEnumerable<EntrepreneurCommon.Models.DatabaseModels.DbTokenWrapper>
+
+<h2>Data Persistency<br/><small>Monitored Characters</small></h2>
+<p>
+    @Html.ActionLink($"Show cache timers", "CacheTimers", null, new {@class = "btn btn-info"})
+</p>
+<table class="table table-striped table-hover table-condensed">
+    <tr>
+        <th>
+
+        </th>
+        <th>
+            Character
+        </th>
+        <th>
+            Wallet Journal
+        </th>
+        <th>
+            Market Transactions
+        </th>
+        <th>
+            Mining Ledger
+        </th>
+    </tr>
+
+    @foreach (var item in Model) {
+        var imgSrc = $"https://imageserver.eveonline.com/Character/{item.CharacterId}_64.jpg";
+        <tr>
+            <td style="vertical-align: middle">
+                <img src="@imgSrc" width="48" height="48"/>
+            </td>
+            <td style="vertical-align: middle">
+                <strong>@Html.ActionLink(item.CharacterName,"DynamicInfo","Info",new{id=item.CharacterId},null)</strong><br/>(@item.CharacterId)
+            </td>
+            <td style="vertical-align: middle">
+                @if ( Esi.Auth.CheckScope(item, EsiCharacterScopes.WalletRead) )
+                {
+                    @Html.ActionLink("Wallet Journal", "WalletJournal", "Persistency", new { CharacterId = item.CharacterId }, new { @class = "btn btn-default" })
+
+                } else
+                {
+                    <p>No Scopes</p>
+                }
+            </td>
+            <td style="vertical-align: middle">
+                @if (Esi.Auth.CheckScope(item, EsiCharacterScopes.WalletRead)) {
+                    @Html.ActionLink("Market Transactions", "WalletTransactions", new {CharacterId = item.CharacterId}, new {@class = "btn btn-default" })
+                    ;
+                }
+            </td>
+            <td style="vertical-align: middle">
+                @if (Esi.Auth.CheckScope(item, EsiCharacterScopes.MarketsOrdersRead)) {
+                    @Html.ActionLink("MarketOrdersHistory", "MarketOrdersHistory", new {CharacterId = item.CharacterId}, new {@class = "btn btn-default"})
+                }
+            </td>
+            <td style="vertical-align: middle">
+                @if (Esi.Auth.CheckScope(item, EsiCharacterScopes.WalletRead)) {
+                    @Html.ActionLink("Mining Ledger", "MiningLedger", new {CharacterId = item.CharacterId}, new {@class = "btn btn-default" })
+                    ;
+                }
+            </td>
+        </tr>
+    }
+
+
+
+</table>
+
+<hr/>
+
+<h2>Background Workers</h2>
+@Html.ActionLink("Spawn Background Workers","Spawn","Persistency");
+<table class="table table-striped table-hover table-condensed">
+    <tr>
+        <th>Job Resource</th>
+        <th>Job Type</th>
+        <th>Job Params</th>
+        <th>Next Update</th>
+    </tr>
+    @foreach (var job in JobHelper.UpdateWorkers) {
+        <tr>
+            <td>@job.ResourceResolved</td>
+            <td>@job.WorkType</td>
+            <td>@job.Parameters</td>
+            <td>@job.NextUpdate</td>
+        </tr>
+    }
+</table>

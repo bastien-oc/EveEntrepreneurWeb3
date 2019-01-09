@@ -1,0 +1,79 @@
+﻿@model IEnumerable<EntrepreneurCommon.Models.DatabaseModels.DbTokenWrapper>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
+<h2>Index</h2>
+
+<p>
+    @*@Html.ActionLink("Create New", "Create")*@
+</p>
+<table class="align-middle table table-striped table-condensed table-hover" style="vertical-align: middle">
+    <tr>
+        <th>Avatar</th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.CharacterName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CharacterId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Scopes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TokenType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RefreshToken)
+        </th>
+        <th></th>
+
+    </tr>
+
+    @foreach (var item in Model) {
+        <tr class="align-middle" style="vertical-align: middle">
+            <td class="align-middle">
+                @{
+                    var avatarSrc = $"https://imageserver.eveonline.com/Character/{item.CharacterId}_64.jpg";
+                }
+                <img src="@avatarSrc"/>
+            </td>
+
+            <td class="align-middle">
+                <span class="align-middle">@Html.DisplayFor(modelItem => item.CharacterName)</span>
+            </td>
+            <td class="align-middle">
+                @Html.DisplayFor(modelItem => item.CharacterId)
+            </td>
+            <td class="align-middle">
+                <button class="btn btn-info" data-toggle="tooltip" data-placement="bottom" data-original-tile="@item.Scopes" title="@Html.DisplayFor(modelItem => item.Scopes)">See Scopes</button>
+                @*<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="left" title="" data-original-title="Tooltip on left">Left</button>*@
+            </td>
+            <td class="align-middle">
+                @Html.DisplayFor(modelItem => item.TokenType)
+            </td>
+            <td class="align-middle">
+                <textarea class="form-control" style="resize: vertical" readonly>@Html.DisplayFor(modelItem => item.RefreshToken)</textarea>
+            </td>
+            <td class="align-middle">
+                @Html.ActionLink("Refresh", "Refresh", new {UUID = item.Uuid}, new {@class = "btn btn-default"})
+                @Html.ActionLink("Details", "Details", new {UUID = item.Uuid}, new {@class = "btn btn-info"})
+            </td>
+
+
+        </tr>
+    }
+
+
+
+
+
+</table>

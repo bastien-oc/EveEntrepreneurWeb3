@@ -1,0 +1,101 @@
+﻿@model IEnumerable<EntrepreneurCommon.Models.EsiResponseModels.CharacterMarketOrdersHistoryModel>
+
+@{
+    ViewBag.Title = "MarketOrdersHistory";
+}
+
+<h2>MarketOrdersHistory</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CharacterId)
+        </th>
+        <th>OrderId</th>
+        <th>Range</th>
+        <th>State</th>
+        <th>
+            @Html.DisplayNameFor(model => model.Duration)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Escrow)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsBuyOrder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsCorporation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Issued)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LocationId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MinVolume)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RegionId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TypeId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VolumeRemain)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VolumeTotal)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CharacterId)
+        </td>
+        <td>@Html.DisplayFor(modelItem => item.OrderId)</td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Duration)
+        </td>
+        <td>@Html.DisplayFor(modelItem => item.Range)</td>
+        <td>@Html.DisplayFor(modelItem => item.State)</td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Escrow)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsBuyOrder)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsCorporation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Issued)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LocationId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MinVolume)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RegionId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TypeId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VolumeRemain)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VolumeTotal)
+        </td>
+    </tr>
+}
+
+</table>

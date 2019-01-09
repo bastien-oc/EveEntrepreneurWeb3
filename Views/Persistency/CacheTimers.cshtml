@@ -1,0 +1,45 @@
+﻿
+@using EveEntrepreneurWebPersistency3.Models
+@{
+    ViewBag.Title = "CacheTimers";
+}
+
+<h2>CacheTimers</h2>
+
+<table class="table table-striped table-hover">
+    <tr>
+        <th>
+            Resource
+        </th>
+        <th>
+            Key
+        </th>
+        <th>
+            Last Updated (UTC)
+        </th>
+        <th>
+            Expires (UTC)
+        </th>
+    </tr>
+    
+    @{
+        var context = new AppDbContext();
+    }
+    @foreach (var item in context.CacheTimers) {
+    <tr>
+        <th>
+            @item.Resource
+        </th>
+        <td>
+            @item.Key
+        </td>
+        <td>
+            @item.LastUpdated
+        </td>
+        <td>
+            @item.Expires
+        </td>
+    </tr>
+}
+
+</table>

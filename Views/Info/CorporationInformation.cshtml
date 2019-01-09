@@ -1,0 +1,143 @@
+﻿@using EveEntrepreneurWebPersistency3.Logic
+@model EveEntrepreneurWebPersistency3.Models.CorporationInformation
+
+@{
+    ViewBag.Title = "CorporationInformation";
+}
+
+<h2>CorporationInformation</h2>
+
+<div>
+    @{
+        var founderName = Database.ResolveIdToName(Model.CreatorId)?.Name;
+        var ceoName = Database.ResolveIdToName(Model.CeoId)?.Name;
+        var allianceName = Database.ResolveIdToName(Model.AllianceId)?.Name;
+        var avatarSrc = $"https://imageserver.eveonline.com/Corporation/{Model.CorporationId}_256.png";
+        var taxRate = $"{Model.TaxRate:P}";
+        var homeStation = Database.ResolveIdToName(Model.HomeStationId)?.Name;
+        // https://imageserver.eveonline.com/Corporation/917701062_128.png
+    }
+    <h4>CorporationPublicInformation</h4>
+    <hr/>
+    <div class="row">
+        <img class="float-right" src="@avatarSrc"/>
+    </div>
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            <strong> @Html.DisplayFor(model => model.Name) @Model.Ticker</strong>
+        </dd>
+        @{
+            if (!string.IsNullOrEmpty(allianceName)) {
+                <dt>
+                    Alliance
+                </dt>
+                <dd>
+                    <strong>@Html.ActionLink(allianceName, "DynamicInfo", "Info", new {id = Model.AllianceId}, null)</strong>
+                    (@Html.DisplayFor(model => model.AllianceId))
+                </dd>
+            }
+        }
+
+        <dt>
+            Ceo
+        </dt>
+
+        <dd>
+            <strong>@Html.ActionLink(ceoName, "DynamicInfo", "Info", new {id = Model.CeoId}, null)</strong>
+            (@Html.DisplayFor(model => model.CeoId))
+        </dd>
+
+        <dt>
+            Founder
+        </dt>
+
+        <dd>
+            <strong>@Html.ActionLink(founderName, "DynamicInfo", "Info", new {id = Model.CreatorId}, null)</strong>
+            (@Html.DisplayFor(model => model.CreatorId))
+        </dd>
+
+        <dt>
+            Date Founded
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateFounded)
+        </dd>
+
+
+        <dt>
+            Members
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MemberCount)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TaxRate)
+        </dt>
+
+        <dd>
+            @taxRate
+        </dd>
+        
+        <dt>
+            Headquarters
+        </dt>
+
+        <dd>
+            <strong >@Html.ActionLink(homeStation, "DynamicInfo", "Info", new {id = Model.HomeStationId}, null)</strong>
+        </dd>
+        <hr/>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @*@Html.DisplayFor(model => model.Description)*@
+            <div>
+                <code>@Model.Description</code>
+            </div>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FactionId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FactionId)
+        </dd>
+
+
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Shares)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Shares)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Url)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */}) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

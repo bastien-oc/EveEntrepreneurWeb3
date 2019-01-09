@@ -1,0 +1,88 @@
+﻿@using EveEntrepreneurWebPersistency3.Logic
+@model IEnumerable<EveEntrepreneurWebPersistency3.Models.CharacterPublicInformation>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<form action="@Url.Action("Search", "Info")" method="get">
+    <div >
+        <input type="text" name="search" class="form-control"/>
+        <input type="submit" class="btn-primary btn-block btn-sm"/>
+    </div>
+</form>
+<hr/>
+
+<table class="table">
+    <tr>
+        <th>
+
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CorporationID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AllianceID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Birthday)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SecurityStatus)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model) {
+                    var avatarSrc = $"https://imageserver.eveonline.com/Character/{item.CharacterId}_64.jpg";
+                    var corporationName = Database.ResolveIdToName(item.CorporationID)?.Name;
+                    var allianceName = Database.ResolveIdToName(item.AllianceID)?.Name;
+        var genderChar = item.Gender == "male" ? "&#9794;" : "&#9792;";
+    <tr>
+        <th>
+            <img src="@avatarSrc" />
+        </th>
+        <td>
+            @Html.Raw(genderChar) <strong>@Html.ActionLink(item.Name, "DynamicInfo", "Info", new { id = item.CharacterId }, null)</strong> <br />
+            (@item.CharacterId)
+        </td>
+        <td>
+            <strong>@Html.ActionLink(corporationName, "DynamicInfo", "Info", new { id = item.CorporationID }, null)</strong><br />
+            (@item.CorporationID)
+        </td>
+        <td>
+            @if (item.AllianceID != 0)
+            {
+                <strong>@Html.ActionLink(allianceName, "DynamicInfo", "Info", new { id = item.AllianceID }, null)</strong>
+                <br />
+                @Html.Raw($"({item.AllianceID})")
+            }
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.Birthday)*@
+            @DateTime.Parse(item.Birthday).ToString("yyyy-MM-dd HH:mm:ss")
+        </td>
+
+        <td>
+            <btn class="btn btn-sm btn-info" title="@item.Description">Description</btn>
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.SecurityStatus)
+        </td>
+        <td>
+            @Html.ActionLink("See Profile", "CharacterPublicInformation", new { id = item.CharacterId }) |
+        </td>
+    </tr>
+    }
+
+</table>

@@ -1,0 +1,9 @@
+﻿@using EveEntrepreneurWebPersistency3.Models
+
+@{
+    ViewBag.Title = "title";
+}
+@{
+    Session.Add("iggystate","addKey");
+}
+<h2><a href="@Html.Raw($"{Esi.RedirectUrl}&iggystate=addkey")"><img src="https://web.ccpgamescdn.com/eveonlineassets/developers/eve-sso-login-black-small.png"/></a></h2>

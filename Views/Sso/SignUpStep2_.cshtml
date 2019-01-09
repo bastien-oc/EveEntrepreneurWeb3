@@ -1,0 +1,21 @@
+@using System.Web.Mvc.Html
+@using EntrepreneurCommon.Models.Central
+@using EntrepreneurCommon.Models.DatabaseModels
+@using EveEntrepreneurWebPersistency3.Models
+@model UserEntity
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+
+@{
+    var CallBack = (SsoCallbackModel) ViewBag.CallBack;
+    var token = (DbTokenWrapper) ViewBag.Token;
+    MainCharacter = token.CharacterId;
+}
+
+@Html.AntiForgeryToken()
+@Html.EditorForModel()

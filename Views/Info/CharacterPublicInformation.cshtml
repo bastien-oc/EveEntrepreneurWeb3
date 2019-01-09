@@ -1,0 +1,130 @@
+﻿@using EveEntrepreneurWebPersistency3.Logic
+@model EntrepreneurCommon.Models.EsiResponseModels.CharacterPublicInformation
+
+@{
+    ViewBag.Title = "PlayerInfo";
+}
+
+<h2>PlayerInfo</h2>
+
+<div>
+    <h4>CharacterPublicInformation</h4>
+    <hr/>
+    @{
+        var avatarSrc = $"https://imageserver.eveonline.com/Character/{Model.CharacterId}_256.jpg";
+        string allianceName;
+        var corporationName = Database.ResolveIdToName(Model.CorporationId)?.Name;
+        if (Model.AllianceId != 0) {
+            allianceName = Database.ResolveIdToName(Model.AllianceId)?.Name;
+        }
+        else {
+            allianceName = "None";
+        }
+    }
+    <div class="row">
+        <div class="col-md-3">
+            <img src="@avatarSrc"/>
+        </div>
+        <div class="col-md-6">
+            <dl class="dl-horizontal">
+
+                <dt>
+                    <h4>
+                        <strong>@Html.DisplayNameFor(model => model.Name)</strong>
+                    </h4>
+                </dt>
+
+                <dd>
+                    <h4>
+                        <strong> @Html.DisplayFor(model => model.Name)</strong>
+                    </h4>
+                </dd>
+
+                <dt>
+                    Corporation
+                </dt>
+
+                <dd>
+                    <strong>@Html.ActionLink(corporationName, "DynamicInfo", "Info", new { id = Model.CorporationId }, null)</strong> @*@Html.Raw($"{Model.CorporationID}")*@
+                </dd>
+
+                <dt>Alliance</dt>
+                <dd>
+                    @if (Model.AllianceId != 0)
+                    {
+                        <strong>@Html.ActionLink(allianceName, "DynamicInfo", "Info", new { id = Model.AllianceId }, null)</strong> @*@Html.Raw($"({Model.AllianceID})")*@
+                    }
+                    else
+                    {
+                        @Html.Raw("None")
+                    }
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Birthday)
+                </dt>
+
+                <dd>
+                    Model.Birthday.ToString("yyyy MMMM dd HH:mm:ss")
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.SecurityStatus)
+                </dt>
+
+                <dd>
+                    @Html.Raw($"{Model.SecurityStatus:0.00}")
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <hr />
+                <dt>
+                    @Html.DisplayNameFor(model => model.AncestryId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.AncestryId)
+                </dd>
+
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.BloodlineId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.BloodlineId)
+                </dd>
+
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Gender)
+                </dd>
+
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.RaceId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.RaceId)
+                </dd>
+
+            </dl>
+        </div>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new {id = Model.CharacterId}) |
+    @Html.ActionLink("Delete","DeleteInfoC","Info",new{id=Model.CharacterId},null) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

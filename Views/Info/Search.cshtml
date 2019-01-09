@@ -1,0 +1,38 @@
+﻿@using EveEntrepreneurWebPersistency3.Logic
+@model EntrepreneurCommon.Models.EsiResponseModels.SearchResponse
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div class="container">
+    @if (Model != null) {
+        var type = Model.GetType();
+        foreach (var i in type.GetProperties()) {
+            <h1>@i.Name</h1>
+
+            <dl class="dl-horizontal">
+                @{
+                    var value = (List<int>) i.GetValue(Model);
+                    if (value != null) {
+                        foreach (var j in value) {
+                            var name = Database.ResolveIdToName(j)?.Name;
+
+                            <dt>
+                                @j
+                            </dt>
+                            <dd>
+                                <strong>@Html.ActionLink(name, "DynamicInfo", "Info", new {id = j}, null)</strong>
+                            </dd>
+                        }
+                    }
+                }
+            </dl>
+        }
+    }
+</div>
+</body>
+</html>

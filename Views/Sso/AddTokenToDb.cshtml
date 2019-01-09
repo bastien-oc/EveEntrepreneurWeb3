@@ -1,0 +1,46 @@
+﻿
+@using Newtonsoft.Json
+@model EveEntrepreneurWebPersistency3.Models.SsoCallbackModel
+@{
+    ViewBag.Title = "Callback";
+}
+
+<strong>Authorization Code: </strong><pre>@Model.SsoCode</pre><br />
+<pre>
+@{
+    try {
+        @Html.Raw(JsonConvert.SerializeObject(Model.TokenContainer, Formatting.Indented))
+    }
+    catch (Exception ex) {
+        @Html.Raw(ex.Message)
+    }
+
+}
+</pre>
+<hr/>
+<h2>HttpRequest</h2>
+<h3>Header</h3>
+<pre>
+@Html.Raw(JsonConvert.SerializeObject(Request.Headers,Formatting.Indented));
+</pre>
+<h3>Stuff</h3>
+<pre>
+@Html.Raw(JsonConvert.SerializeObject(Request.Params,Formatting.Indented));
+</pre>
+<h3>Session</h3>
+<pre>@Html.Raw(JsonConvert.SerializeObject(Session,Formatting.Indented))</pre>
+@*<strong>Refresh Token: </strong><pre>@Model.Token.RefreshToken</pre><br />
+<strong>Access Token: </strong><pre>@Model.Token.AccessTokenAuto</pre><br />
+<strong>Expiry: </strong>@Model.Token.Expiry<br />
+<strong>Character: </strong>@Model.Token.CharacterName<br /><hr />
+<strong>Corporation: </strong>@Model.Token.CorporationName<br/>
+<strong>Alliance: </strong>@Model.Token.AllianceName<br/>
+<strong>Other</strong><br/>
+<code>@Model.Token.ToString()</code><br/>*@
+@*{
+    @Html.Raw($"<pre>{JsonConvert.SerializeObject(Model.Token,Formatting.Indented)}</pre>")
+    @*foreach (var prop in Model.Token.GetType().GetProperties()) {
+        try {
+            @Html.Raw($"<strong>{prop.Name}: </strong>{prop.GetValue(Model.Token, null)}<br/>");
+        } catch (Exception ex) { }
+    };*@

@@ -1,0 +1,90 @@
+﻿@using EveEntrepreneurWebPersistency3.Logic
+@model IEnumerable<EntrepreneurCommon.Models.EsiResponseModels.CharacterWalletTransactionModel>
+
+@{
+    ViewBag.Title = "MarketTransactions";
+}
+
+<h2>MarketTransactions</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Character
+        </th>
+        <th>
+            Client
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Type
+        </th>
+        <th>
+            Location
+        </th>
+        <th>
+            PPU
+        </th>
+        <th>
+            Qty
+        </th>
+        <th>
+            Is Purchase
+        </th>
+        <th>
+            Is Personal
+        </th>
+        <th>
+            Journal Ref ID
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @{ var CharacterName = Database.ResolveIdToName(item.CharacterId);}
+            <strong>@CharacterName<br /></strong>(@item.CharacterId)
+        </td>
+        <td>
+            @{ var ClientName = Database.ResolveIdToName(item.ClientId);}
+            <strong>@ClientName<br/></strong>(@item.ClientId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.TypeId)*@
+            @{ var TypeName = Database.ResolveIdToName(item.TypeId);}
+            <strong>@TypeName</strong><br/>
+            @item.TypeId
+        </td>
+        <td>
+            @{var LocationName = "";
+                if (item.LocationId < Int32.MaxValue) {
+                    LocationName = Database.ResolveIdToName((int) item.LocationId).Name;
+                }@*Database.ResolveIdToName(item.LocationId);*@}
+            <strong>@LocationName</strong><br/>@item.LocationId
+            @*@Html.DisplayFor(modelItem => item.LocationId)*@
+        </td>
+        <td>
+            @Html.Raw($"{item.UnitPrice:#,###.##} ISK")
+            @*@Html.DisplayFor(modelItem => item.UnitPrice)*@
+        </td>
+        <td>
+            @Html.Raw($"{item.Quantity:#,###}")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsBuy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsPersonal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.JournalRefId)
+        </td>
+    </tr>
+}
+
+</table>
